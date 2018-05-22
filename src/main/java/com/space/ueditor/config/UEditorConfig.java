@@ -29,7 +29,7 @@ public class UEditorConfig {
      * @param request
      * @param response
      */
-    @RequestMapping(value="/ueditor-config")
+    @RequestMapping(value="/ueditor/ueditor-config")
     public void config(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         String rootPath = request.getSession().getServletContext().getRealPath("/");
