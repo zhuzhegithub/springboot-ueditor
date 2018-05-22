@@ -19,4 +19,29 @@ springboot整合ueditor,因为ueditor本身并不适合与springboot整合，所
             private String configFileName;          
                       
                       
-                      
+##### 注意：
+      ueditor.config.js 中的：
+      // 服务器统一请求接口路径
+      serverUrl: URL + "ueditor-config"
+      就是 UEditorConfig.java 中的 config 方法的请求映射：
+      /**
+       * 读取配置
+       * @param request
+       * @param response
+       */
+      @RequestMapping(value="/ueditor-config")
+      public void config(HttpServletRequest request, HttpServletResponse response) {
+          response.setContentType("application/json");
+          String rootPath = request.getSession().getServletContext().getRealPath("/");
+          try {
+              String exec = new ActionEnter(request, rootPath,configFileName).exec();
+              PrintWriter writer = response.getWriter();
+              writer.write(exec);
+              writer.flush();
+              writer.close();
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      }
+      
+##### 关于ueditor 的详细配置，可参考 ueditor-conf-dev.json 
