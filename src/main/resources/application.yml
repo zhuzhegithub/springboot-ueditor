@@ -1,0 +1,8 @@
+server:
+  port: 90
+spring:
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      enabled: false
