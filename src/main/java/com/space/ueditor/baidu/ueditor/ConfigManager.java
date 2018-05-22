@@ -20,7 +20,7 @@ public final class ConfigManager {
 	private final String rootPath;
 	private final String originalPath;
 	private final String contextPath;
-	private static final String configFileName = "config.json";
+	private final String configFileName;
 	private String parentPath = null;
 	private JSONObject jsonConfig = null;
 	// 涂鸦上传filename定义
@@ -31,13 +31,15 @@ public final class ConfigManager {
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-	private ConfigManager ( String rootPath, String contextPath, String uri ) throws FileNotFoundException, IOException {
+	private ConfigManager ( String rootPath, String contextPath, String uri,String configFileName
+	) throws FileNotFoundException, IOException {
 		
 		rootPath = rootPath.replace( "\\", "/" );
 		
 		this.rootPath = rootPath;
 		this.contextPath = contextPath;
-		
+		this.configFileName = configFileName;
+
 		if ( contextPath.length() > 0 ) {
 			this.originalPath = this.rootPath + uri.substring( contextPath.length() );
 		} else {
@@ -55,10 +57,10 @@ public final class ConfigManager {
 	 * @param uri 当前访问的uri
 	 * @return 配置管理器实例或者null
 	 */
-	public static ConfigManager getInstance ( String rootPath, String contextPath, String uri ) {
+	public static ConfigManager getInstance ( String rootPath, String contextPath, String uri,String configFileName  ) {
 		
 		try {
-			return new ConfigManager(rootPath, contextPath, uri);
+			return new ConfigManager(rootPath, contextPath, uri,configFileName);
 		} catch ( Exception e ) {
 			return null;
 		}
@@ -146,81 +148,48 @@ public final class ConfigManager {
 	}
 	
 	private void initEnv () throws FileNotFoundException, IOException {
-		
 		File file = new File( this.originalPath );
-		
 		if ( !file.isAbsolute() ) {
 			file = new File( file.getAbsolutePath() );
 		}
-		
 		this.parentPath = file.getParent();
-		
-		//String configContent = this.readFile( this.getConfigPath() );
-		String configContent = this.filter(IOUtils.toString(this.getClass().getClassLoader().getResourceAsStream("config.json")));
-
 		try{
+			String configContent = this.filter(IOUtils.toString(this.getClass().getClassLoader().getResourceAsStream(configFileName),"UTF-8"));
 			JSONObject jsonConfig = new JSONObject( configContent );
 			this.jsonConfig = jsonConfig;
 		} catch ( Exception e ) {
 			this.jsonConfig = null;
 		}
-		
-	}
-
-
-	private String getConfigPath () {
-		//return this.parentPath + File.separator + ConfigManager.configFileName;
-		try {
-			//获取classpath下的config.json路径
-			return this.getClass().getClassLoader().getResource("config.json").toURI().getPath();
-		} catch (URISyntaxException e) {
-			return null;
-		}
 	}
 
 	private String[] getArray ( String key ) {
-		
 		JSONArray jsonArray = this.jsonConfig.getJSONArray( key );
 		String[] result = new String[ jsonArray.length() ];
 		
 		for ( int i = 0, len = jsonArray.length(); i < len; i++ ) {
 			result[i] = jsonArray.getString( i );
 		}
-		
 		return result;
-		
 	}
 	
 	private String readFile ( String path ) throws IOException {
-		
 		StringBuilder builder = new StringBuilder();
-		
 		try {
-			
 			InputStreamReader reader = new InputStreamReader( new FileInputStream( path ), "UTF-8" );
 			BufferedReader bfReader = new BufferedReader( reader );
-			
 			String tmpContent = null;
-			
 			while ( ( tmpContent = bfReader.readLine() ) != null ) {
 				builder.append( tmpContent );
 			}
-			
 			bfReader.close();
-			
 		} catch ( UnsupportedEncodingException e ) {
 			// 忽略
 		}
-		
 		return this.filter( builder.toString() );
-		
 	}
 	
 	// 过滤输入字符串, 剔除多行注释以及替换掉反斜杠
 	private String filter ( String input ) {
-		
 		return input.replaceAll( "/\\*[\\s\\S]*?\\*/", "" );
-		
 	}
-	
 }

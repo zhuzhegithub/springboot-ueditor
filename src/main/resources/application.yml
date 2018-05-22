@@ -6,3 +6,5 @@ spring:
   devtools:
     restart:
       enabled: false
+uEditorConfig:
+  fileName: ueditor-conf-dev.json
