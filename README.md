@@ -1,0 +1,2 @@
+# springboot-ueditor
+springboot整合ueditor,因为ueditor本身并不适合与springboot整合，所以我在此处对ueditor源码进行了修改
