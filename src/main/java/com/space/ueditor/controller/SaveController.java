@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @email 1529949535@qq.com
  */
 @Slf4j
-@RequestMapping("/test")
 @RestController
 public class SaveController {
 
