@@ -32,6 +32,7 @@ public class SaveController {
     public Long save(UEditorBO uEditorBO){
         uEditorBO.setCreateDate(getDate());
         uEditorBO.setUpdateDate(getDate());
-        return uEditorService.save(uEditorBO);
+        uEditorService.save(uEditorBO);
+        return uEditorBO.getId();
     }
 }

@@ -4,6 +4,8 @@ import com.space.ueditor.bo.UEditorBO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author zhuzhe
  * @date 2018/5/28 11:23
@@ -18,5 +20,7 @@ public interface UEditorMapper {
      * @param uEditorBO
      * @return
      */
-    Long save(UEditorBO uEditorBO);
+    int save(UEditorBO uEditorBO);
+
+    List<UEditorBO> get();
 }
