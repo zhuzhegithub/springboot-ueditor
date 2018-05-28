@@ -1,16 +1,6 @@
-web:
-  upload-path: E:/
 spring:
-  mvc:
-    static-path-pattern: /**
-  resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
-  thymeleaf:
-    cache: false
   devtools:
     restart:
       enabled: false
-server:
-  port: 91
-uEditorConfig:
-  fileName: ueditor-conf-dev.json
+  profiles:
+    active: dev

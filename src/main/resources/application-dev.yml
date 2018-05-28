@@ -1,0 +1,23 @@
+web:
+  upload-path: E:/
+spring:
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      enabled: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: 123456
+  mybatis:
+    mapper-locations: classpath:mapper/**/*.xml
+server:
+  port: 91
+uEditorConfig:
+  fileName: ueditor-conf-dev.json
